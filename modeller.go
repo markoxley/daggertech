@@ -131,10 +131,10 @@ func getDefs(t interface{}, first bool) []field {
 								}
 							case "size":
 								szPt := strings.Split(pts[1], ",")
-								if v, err := strconv.ParseInt(szPt[0], 10, 8); err == nil {
+								if v, err := strconv.ParseInt(szPt[0], 10, 64); err == nil {
 									szMj = int(v)
 									if len(szPt) > 1 {
-										if v, err = strconv.ParseInt(szPt[1], 10, 8); err == nil {
+										if v, err = strconv.ParseInt(szPt[1], 10, 64); err == nil {
 											szMn = int(v)
 										}
 									}

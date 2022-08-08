@@ -228,7 +228,7 @@ func populateModel(m Modeller, r *sql.Rows) ([]Modeller, bool) {
 						}
 					}
 				case tBool:
-					if val, err := strconv.ParseInt(*cols[i], 10, 0); err == nil {
+					if val, err := strconv.ParseInt(*cols[i], 10, 64); err == nil {
 						if fld.allowNull {
 							//boolVal := val == 1
 							v.Elem().FieldByName(fld.name).Elem().SetBool(val == 1) //Set(reflect.ValueOf(&boolVal))
