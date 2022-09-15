@@ -2,6 +2,8 @@
 // At present, this is only for postgres
 package clause
 
+import "fmt"
+
 // Builder is the main clause builder mechanism used for dagger
 type Builder struct {
 	conjunction conjunction
@@ -23,7 +25,11 @@ func (c *Builder) ToString() string {
 		if result != "" {
 			result += string(child.getConjunction())
 		}
+
 		v := child.ToString()
+		if _, ok := child.(*Builder); ok {
+			v = fmt.Sprintf("(%s)", v)
+		}
 		if v == "" {
 			return ""
 		}
