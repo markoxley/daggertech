@@ -19,7 +19,7 @@ type TestModel struct {
 }
 
 func getConnectionDetails() *daggertech.Config {
-	c := daggertech.CreateConfig("tcp(127.0.0.1:3306)", "daggertechtest", "root", "gbjbamox", true)
+	c := daggertech.CreateConfig("tcp(127.0.0.1:3306)", "daggertechtest", "tester", "tester", true)
 	return c
 }
 

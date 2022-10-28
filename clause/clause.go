@@ -2,6 +2,7 @@ package clause
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 	"time"
 
@@ -36,6 +37,15 @@ func (c *clause) ToString() string {
 	case oBetween:
 		fieldCount = 2
 	case oIn:
+		vt := reflect.TypeOf(c.values[0])
+		if vt.Kind() == reflect.Slice || vt.Kind() == reflect.Array {
+			ov := c.values[0].([]interface{})
+			nv := make([]interface{}, len(ov))
+			for i, el := range ov {
+				nv[i] = el
+			}
+			c.values = nv
+		}
 		fieldCount = len(c.values)
 		// edge case, there are no values, return an error
 		if fieldCount == 0 {

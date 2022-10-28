@@ -107,7 +107,7 @@ func TestClauseIn(t *testing.T) {
 		{name: "In DateTime", input: []interface{}{"dob", tm1}, out: fmt.Sprintf("`dob` in ('%s')", utils.TimeToSQL(&tm1))},
 	}
 	for _, tst := range tests {
-		if got := clause.In(tst.input[0].(string), tst.input[1:]...).ToString(); got != tst.out {
+		if got := clause.In(tst.input[0].(string), tst.input[1:]).ToString(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
@@ -237,6 +237,11 @@ func TestClauseNotIn(t *testing.T) {
 		{name: "Not in Double", input: []interface{}{"height", float64(432.5433)}, out: "`height` not in (432.543300)"},
 		{name: "Not in String", input: []interface{}{"name", "Sally", "Mark", "Jane", "Sam", "Jack"}, out: "`name` not in ('Sally','Mark','Jane','Sam','Jack')"},
 		{name: "Not in DateTime", input: []interface{}{"dob", tm1}, out: fmt.Sprintf("`dob` not in ('%s')", utils.TimeToSQL(&tm1))},
+	}
+	for _, tst := range tests {
+		if got := clause.NotIn(tst.input[0].(string), tst.input[1:]).ToString(); got != tst.out {
+			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
+		}
 	}
 	for _, tst := range tests {
 		if got := clause.NotIn(tst.input[0].(string), tst.input[1:]...).ToString(); got != tst.out {
