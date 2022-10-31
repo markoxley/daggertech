@@ -2,6 +2,7 @@ package clause
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 	"time"
 
@@ -15,6 +16,21 @@ type clause struct {
 	not         bool
 	op          int
 	values      []interface{}
+}
+
+func consolidateArray(values []interface{}) []interface{} {
+	res := make([]interface{}, 0, len(values))
+	for _, v := range values {
+		arr := reflect.ValueOf(v)
+		if arr.Kind() != reflect.Array {
+			res = append(res, v)
+			continue
+		}
+		for i := 0; i < arr.Len(); i++ {
+			res = append(res, arr.Index(i).Interface())
+		}
+	}
+	return res
 }
 
 // ToString converts the clause to a string
@@ -36,6 +52,7 @@ func (c *clause) ToString() string {
 	case oBetween:
 		fieldCount = 2
 	case oIn:
+		c.values = consolidateArray(c.values)
 		fieldCount = len(c.values)
 		// edge case, there are no values, return an error
 		if fieldCount == 0 {
