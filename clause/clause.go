@@ -137,5 +137,69 @@ func MakeValue(v interface{}) (string, int, bool) {
 	if f, ok := v.(time.Time); ok {
 		return fmt.Sprintf("'%s'", utils.TimeToSQL(&f)), dDate, true
 	}
+
+	if f, ok := v.(float32); ok {
+		r := fmt.Sprintf("%f", f)
+		return r[:len(r)-2], dFloat, true
+	}
+
+	if f, ok := v.(*float64); ok {
+		if f != nil {
+			return fmt.Sprintf("%f", *f), dDouble, true
+		} else {
+			return "NULL", dDouble, true
+		}
+	}
+
+	if f, ok := v.(*int); ok {
+		if f != nil {
+			return fmt.Sprintf("%d", *f), dInt, true
+		} else {
+			return "NULL", dInt, true
+		}
+	}
+	if f, ok := v.(*int32); ok {
+		if f != nil {
+			return fmt.Sprintf("%d", *f), dInt, true
+		} else {
+			return "NULL", dInt, true
+		}
+	}
+
+	if f, ok := v.(*int64); ok {
+		if f != nil {
+			return fmt.Sprintf("%d", *f), dLong, true
+		} else {
+			return "NULL", dLong, true
+		}
+	}
+
+	if f, ok := v.(*bool); ok {
+		if f != nil {
+			if *f {
+				return "1", dBool, true
+			}
+			return "0", dBool, true
+		} else {
+			return "NULL", dBool, true
+		}
+	}
+
+	if f, ok := v.(*string); ok {
+		if f != nil {
+			return fmt.Sprintf("'%s'", strings.ReplaceAll(*f, "'", "''")), dText, true
+		} else {
+			return "NULL", dText, true
+		}
+	}
+
+	if f, ok := v.(*time.Time); ok {
+		if f != nil {
+			return fmt.Sprintf("'%s'", utils.TimeToSQL(f)), dDate, true
+		} else {
+			return "NULL", dDate, true
+		}
+	}
+
 	return "", 0, false
 }
