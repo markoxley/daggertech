@@ -60,13 +60,13 @@ func tableTest(m Modeller) ([]field, string, bool) {
 	sql, required := tableDefinition(m)
 	if required {
 		te := tableExists(getTableName(m))
-		for _, s := range sql {
-			if !executeQuery(s) {
-				log.Panicf(`Error executing "%s"`, s)
-			}
-		}
 		knownTables = append(knownTables, getTableName(m))
 		if !te {
+			for _, s := range sql {
+				if !executeQuery(s) {
+					log.Panicf(`Error executing "%s"`, s)
+				}
+			}
 			if standingData := m.StandingData(); standingData != nil {
 				for _, data := range standingData {
 					Save(data)
