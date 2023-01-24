@@ -8,7 +8,7 @@ import (
 
 const (
 	sqlTableCreate = `CREATE TABLE IF NOT EXISTS %s (%s);`
-	sqlIndexCreate = "CREATE INDEX IF NOT EXISTS %s_%s_Idx on %s(`%s`);"
+	sqlIndexCreate = "CREATE INDEX %s_%s_Idx on %s(`%s`);"
 )
 
 // Modeller defines the common functionality of a Model
