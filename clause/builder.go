@@ -4,7 +4,6 @@ package clause
 
 import (
 	"fmt"
-	"reflect"
 )
 
 // Builder is the main clause builder mechanism used for dagger
@@ -102,8 +101,8 @@ func Contains(f string, v string) *Builder {
 }
 
 // In creates a new Builder with the first clause being an in clause
-func In(f string, v ...interface{}) *Builder {
-	values := consolidateArray(v)
+func In(f string, v interface{}) *Builder {
+	values := convertToInterfaceArray(v)
 	n := newBuilder(conAnd)
 	n.children = append(n.children, newClause(conAnd, f, oIn, false, values...))
 	return n
@@ -180,8 +179,8 @@ func NotContains(f string, v string) *Builder {
 }
 
 // NotIn creates a new Builder with the first clause being a not in clause
-func NotIn(f string, v ...interface{}) *Builder {
-	values := consolidateArray(v)
+func NotIn(f string, v interface{}) *Builder {
+	values := convertToInterfaceArray(v)
 	n := newBuilder(conAnd)
 	n.children = append(n.children, newClause(conAnd, f, oIn, true, values...))
 	return n
@@ -244,8 +243,8 @@ func (c *Builder) AndContains(f string, v string) *Builder {
 }
 
 // AndIn add an in clause to the clause with an AND conjunction
-func (c *Builder) AndIn(f string, v ...interface{}) *Builder {
-	values := consolidateArray(v)
+func (c *Builder) AndIn(f string, v interface{}) *Builder {
+	values := convertToInterfaceArray(v)
 	c.children = append(c.children, newClause(conAnd, f, oIn, false, values...))
 	return c
 }
@@ -311,8 +310,8 @@ func (c *Builder) AndNotContains(f string, v string) *Builder {
 }
 
 // AndNotIn add a not in clause to the clause with an AND conjunction
-func (c *Builder) AndNotIn(f string, v ...interface{}) *Builder {
-	values := consolidateArray(v)
+func (c *Builder) AndNotIn(f string, v interface{}) *Builder {
+	values := convertToInterfaceArray(v)
 	c.children = append(c.children, newClause(conAnd, f, oIn, true, values...))
 	return c
 }
@@ -373,8 +372,8 @@ func (c *Builder) OrContains(f string, v string) *Builder {
 }
 
 // OrIn add an in clause to the clause with an OR conjunction
-func (c *Builder) OrIn(f string, v ...interface{}) *Builder {
-	values := consolidateArray(v)
+func (c *Builder) OrIn(f string, v interface{}) *Builder {
+	values := convertToInterfaceArray(v)
 	c.children = append(c.children, newClause(conOr, f, oIn, false, values...))
 	return c
 }
@@ -440,8 +439,8 @@ func (c *Builder) OrNotContains(f string, v string) *Builder {
 }
 
 // OrNotIn add a not in clause to the clause with an OR conjunction
-func (c *Builder) OrNotIn(f string, v ...interface{}) *Builder {
-	values := consolidateArray(v)
+func (c *Builder) OrNotIn(f string, v interface{}) *Builder {
+	values := convertToInterfaceArray(v)
 	c.children = append(c.children, newClause(conOr, f, oIn, true, values...))
 	return c
 }
@@ -450,19 +449,4 @@ func (c *Builder) OrNotIn(f string, v ...interface{}) *Builder {
 func (c *Builder) OrNotBetween(f string, v1 interface{}, v2 interface{}) *Builder {
 	c.children = append(c.children, newClause(conOr, f, oBetween, true, v1, v2))
 	return c
-}
-
-func consolidateArray(values []interface{}) []interface{} {
-	res := make([]interface{}, 0, len(values))
-	for _, v := range values {
-		arr := reflect.ValueOf(v)
-		if arr.Kind() != reflect.Array {
-			res = append(res, v)
-			continue
-		}
-		for i := 0; i < arr.Len(); i++ {
-			res = append(res, arr.Index(i).Interface())
-		}
-	}
-	return res
 }

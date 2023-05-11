@@ -244,7 +244,7 @@ func TestClauseNotIn(t *testing.T) {
 		}
 	}
 	for _, tst := range tests {
-		if got := clause.NotIn(tst.input[0].(string), tst.input[1:]...).ToString(); got != tst.out {
+		if got := clause.NotIn(tst.input[0].(string), tst.input[1:]).ToString(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
