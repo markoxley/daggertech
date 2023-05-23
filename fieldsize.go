@@ -14,7 +14,7 @@ func newSize(sz, dec int) fieldSize {
 	}
 }
 
-func (s fieldSize) toString() string {
+func (s fieldSize) String() string {
 	if s.decimal > 0 {
 		return fmt.Sprintf("%d,%d", s.size, s.decimal)
 	}

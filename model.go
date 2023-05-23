@@ -105,7 +105,7 @@ func tableDefinition(m Modeller) ([]string, bool) {
 		}
 		flds += fmt.Sprintf("`%s` %s", f.name, pgFieldNames[f.fType])
 		if f.fType != tUUID && f.fType != tChar && f.size.size > 0 {
-			flds += fmt.Sprintf("(%s)", f.size.toString())
+			flds += fmt.Sprintf("(%s)", f.size.String())
 		}
 		if f.fType == tString && f.size.size == 0 {
 			flds += "(256)"

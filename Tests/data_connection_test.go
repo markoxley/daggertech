@@ -48,12 +48,11 @@ func TestGetRecord(t *testing.T) {
 		Age:  42,
 	}
 	daggertech.Save(tm1)
-	cl := clause.Equal("id", *tm1.ID).ToString()
+	cl := clause.Equal("id", *tm1.ID).String()
 	c := &daggertech.Criteria{
 		Where: cl,
 	}
-	tm2, _ := daggertech.First(&TestModel{}, c)
-	tm3, ok := tm2.(*TestModel)
+	tm3, ok := daggertech.First(&TestModel{}, c)
 	if !ok {
 		t.Error("Unable to convert Modeller to TestModel")
 	}
@@ -76,13 +75,11 @@ func TestUpdateRecord(t *testing.T) {
 	}
 	daggertech.Save(tm1)
 
-	tm2, ok := daggertech.First(&TestModel{}, nil)
+	tm3, ok := daggertech.First(&TestModel{}, nil)
 
 	if !ok {
 		t.Error("Failed to retrieve model")
 	}
-
-	tm3, _ := tm2.(*TestModel)
 
 	tm3.Age = 18
 	tm3.Name = "David"
@@ -94,8 +91,8 @@ func TestUpdateRecord(t *testing.T) {
 		t.Errorf("Expected 1 record, found %d", i)
 	}
 
-	tm4, _ := daggertech.First(&TestModel{}, nil)
-	tm5 := tm4.(*TestModel)
+	tm5, _ := daggertech.First(&TestModel{}, nil)
+
 	if tm5.Age != tm3.Age {
 		t.Errorf("Expected Age of %d, got %d", tm3.Age, tm5.Age)
 	}

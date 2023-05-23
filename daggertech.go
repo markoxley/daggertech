@@ -382,7 +382,7 @@ func RawSelect(sql string) []map[string]interface{} {
 
 // Fetch populates the slice with models from the database that match the criteria.
 // Returns false if this fails
-func Fetch(m Modeller, c *Criteria) ([]Modeller, bool) {
+func Fetch[T Modeller](m T, c *Criteria) ([]T, bool) {
 	t := reflect.TypeOf(m)
 	n := t.Name()
 	//	nmNew := reflect.New(t).Elem().Interface()
@@ -393,22 +393,43 @@ func Fetch(m Modeller, c *Criteria) ([]Modeller, bool) {
 	}
 	s := fmt.Sprintf("select * from `%s`", n)
 	whereDone := false
-	if c != nil {
-		if c.Where != "" {
-			s += fmt.Sprintf(" WHERE %s", c.Where)
-			whereDone = true
-		}
-		if !c.IncDeleted {
-			if whereDone {
-				s += " AND"
-			} else {
-				s += "WHERE"
-			}
-			s += "`DeleteDate` Is Null"
-		}
 
-		if c.Order != "" {
-			s += fmt.Sprintf(" ORDER BY %s", c.Order)
+	if c != nil {
+		if c.Where != nil {
+			where := ""
+			switch c.Where.(type) {
+			case string:
+				where, _ = c.Where.(string)
+			case fmt.Stringer:
+				st, _ := c.Where.(fmt.Stringer)
+				where = st.String()
+			}
+			if where != "" {
+				s += fmt.Sprintf(" WHERE %s", where)
+				whereDone = true
+			}
+			if !c.IncDeleted {
+				if whereDone {
+					s += " AND"
+				} else {
+					s += "WHERE"
+				}
+				s += "`DeleteDate` Is Null"
+			}
+		}
+		if c.Order != nil {
+			order := ""
+			switch c.Order.(type) {
+			case string:
+				order, _ = c.Order.(string)
+			case fmt.Stringer:
+				st, _ := c.Order.(fmt.Stringer)
+				order = st.String()
+			}
+
+			if order != "" {
+				s += fmt.Sprintf(" ORDER BY %s", order)
+			}
 		}
 		if c.Limit > 0 {
 			s += fmt.Sprintf(" LIMIT %d", c.Limit)
@@ -417,13 +438,17 @@ func Fetch(m Modeller, c *Criteria) ([]Modeller, bool) {
 			s += fmt.Sprintf(" OFFSET %d", c.Offset)
 		}
 	}
-	res, ok := selectQuery(s, m)
+	arr, ok := selectQuery(s, m)
+	res := make([]T, len(arr))
+	for i, elem := range arr {
+		res[i] = elem.(T)
+	}
 	return res, ok
 }
 
 // First populates the model with the first record from the database that match the criteria.
 // Returns false if this fails or there is no record to return
-func First(m Modeller, c *Criteria) (Modeller, bool) {
+func First[T Modeller](m T, c *Criteria) (T, bool) {
 	if c == nil {
 		c = &Criteria{}
 	}
@@ -434,7 +459,7 @@ func First(m Modeller, c *Criteria) (Modeller, bool) {
 			return ml[0], true
 		}
 	}
-	return nil, false
+	return m, false
 }
 
 // Count returns the number of records in the named table that match the criteria

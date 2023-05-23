@@ -19,8 +19,8 @@ func newBuilder(c conjunction) *Builder {
 	}
 }
 
-// ToString returns the string version of the clause
-func (c *Builder) ToString() string {
+// String returns the string version of the clause
+func (c *Builder) String() string {
 
 	result := ""
 	for _, child := range c.children {
@@ -28,7 +28,7 @@ func (c *Builder) ToString() string {
 			result += string(child.getConjunction())
 		}
 
-		v := child.ToString()
+		v := child.String()
 		if _, ok := child.(*Builder); ok {
 			v = fmt.Sprintf("(%s)", v)
 		}

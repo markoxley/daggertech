@@ -18,8 +18,8 @@ type clause struct {
 	values      []interface{}
 }
 
-// ToString converts the clause to a string
-func (c *clause) ToString() string {
+// String converts the clause to a string
+func (c *clause) String() string {
 	// If opcode is out of range, return error
 	if c.op > oIsNull || c.op < oEqual {
 		return ""

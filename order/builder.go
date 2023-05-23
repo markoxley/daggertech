@@ -26,7 +26,7 @@ func newBuilder() *Builder {
 		fields: make([]order, 0, 0),
 	}
 }
-func (o *order) ToString() string {
+func (o *order) String() string {
 	d := "asc"
 	if !o.ascending {
 		d = "desc"
@@ -60,14 +60,14 @@ func (b *Builder) Asc(f string) *Builder {
 	return b
 }
 
-// ToString returns the string version of the ordering list
-func (b *Builder) ToString() string {
+// String returns the string version of the ordering list
+func (b *Builder) String() string {
 	r := ""
 	for _, o := range b.fields {
 		if r != "" {
 			r += ", "
 		}
-		r += o.ToString()
+		r += o.String()
 	}
 	return r
 }

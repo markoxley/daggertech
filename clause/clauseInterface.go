@@ -1,6 +1,6 @@
 package clause
 
 type clauseInterface interface {
-	ToString() string
+	String() string
 	getConjunction() conjunction
 }

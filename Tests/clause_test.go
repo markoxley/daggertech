@@ -24,7 +24,7 @@ func TestClauseBetween(t *testing.T) {
 		{name: "Between DateTime", input: []interface{}{"dob", tm1, tm2}, out: fmt.Sprintf("`dob` between '%s' and '%s'", utils.TimeToSQL(&tm1), utils.TimeToSQL(&tm2))},
 	}
 	for _, tst := range tests {
-		if got := clause.Between(tst.input[0].(string), tst.input[1], tst.input[2]).ToString(); got != tst.out {
+		if got := clause.Between(tst.input[0].(string), tst.input[1], tst.input[2]).String(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
@@ -46,7 +46,7 @@ func TestClauseEqual(t *testing.T) {
 		{name: "Equal DateTime", input: []interface{}{"dob", tm1}, out: fmt.Sprintf("`dob` = '%s'", utils.TimeToSQL(&tm1))},
 	}
 	for _, tst := range tests {
-		if got := clause.Equal(tst.input[0].(string), tst.input[1]).ToString(); got != tst.out {
+		if got := clause.Equal(tst.input[0].(string), tst.input[1]).String(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
@@ -66,7 +66,7 @@ func TestClauseGreater(t *testing.T) {
 		{name: "Greater DateTime", input: []interface{}{"dob", tm1}, out: fmt.Sprintf("`dob` > '%s'", utils.TimeToSQL(&tm1))},
 	}
 	for _, tst := range tests {
-		if got := clause.Greater(tst.input[0].(string), tst.input[1]).ToString(); got != tst.out {
+		if got := clause.Greater(tst.input[0].(string), tst.input[1]).String(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
@@ -86,7 +86,7 @@ func TestClauseLess(t *testing.T) {
 		{name: "Less DateTime", input: []interface{}{"dob", tm1}, out: fmt.Sprintf("`dob` < '%s'", utils.TimeToSQL(&tm1))},
 	}
 	for _, tst := range tests {
-		if got := clause.Less(tst.input[0].(string), tst.input[1]).ToString(); got != tst.out {
+		if got := clause.Less(tst.input[0].(string), tst.input[1]).String(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
@@ -107,7 +107,7 @@ func TestClauseIn(t *testing.T) {
 		{name: "In DateTime", input: []interface{}{"dob", tm1}, out: fmt.Sprintf("`dob` in ('%s')", utils.TimeToSQL(&tm1))},
 	}
 	for _, tst := range tests {
-		if got := clause.In(tst.input[0].(string), tst.input[1:]).ToString(); got != tst.out {
+		if got := clause.In(tst.input[0].(string), tst.input[1:]).String(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
@@ -115,28 +115,28 @@ func TestClauseIn(t *testing.T) {
 
 func TestClauseLike(t *testing.T) {
 	cs := "`name` like '%ma%'"
-	if ts := clause.Like("name", "%ma%").ToString(); ts != cs {
+	if ts := clause.Like("name", "%ma%").String(); ts != cs {
 		t.Errorf("Expecting %v, got %v", cs, ts)
 	}
 }
 
 func TestClauseStartsWith(t *testing.T) {
 	cs := "`model` like 'atar%'"
-	if ts := clause.StartsWith("model", "atar").ToString(); ts != cs {
+	if ts := clause.StartsWith("model", "atar").String(); ts != cs {
 		t.Errorf("Expecting %v, got %v", cs, ts)
 	}
 }
 
 func TestClauseEndsWith(t *testing.T) {
 	cs := "`product` like 'ole%'"
-	if ts := clause.StartsWith("product", "ole").ToString(); ts != cs {
+	if ts := clause.StartsWith("product", "ole").String(); ts != cs {
 		t.Errorf("Expecting %v, got %v", cs, ts)
 	}
 }
 
 func TestClauseContains(t *testing.T) {
 	cs := "`breed` like '%ige%'"
-	if ts := clause.Contains("breed", "ige").ToString(); ts != cs {
+	if ts := clause.Contains("breed", "ige").String(); ts != cs {
 		t.Errorf("Expecting %v, got %v", cs, ts)
 	}
 }
@@ -156,7 +156,7 @@ func TestClauseNotBetween(t *testing.T) {
 		{name: "Not between DateTime", input: []interface{}{"dob", tm1, tm2}, out: fmt.Sprintf("`dob` not between '%s' and '%s'", utils.TimeToSQL(&tm1), utils.TimeToSQL(&tm2))},
 	}
 	for _, tst := range tests {
-		if got := clause.NotBetween(tst.input[0].(string), tst.input[1], tst.input[2]).ToString(); got != tst.out {
+		if got := clause.NotBetween(tst.input[0].(string), tst.input[1], tst.input[2]).String(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
@@ -178,7 +178,7 @@ func TestClauseNotEqual(t *testing.T) {
 		{name: "Not equal DateTime", input: []interface{}{"dob", tm1}, out: fmt.Sprintf("`dob` <> '%s'", utils.TimeToSQL(&tm1))},
 	}
 	for _, tst := range tests {
-		if got := clause.NotEqual(tst.input[0].(string), tst.input[1]).ToString(); got != tst.out {
+		if got := clause.NotEqual(tst.input[0].(string), tst.input[1]).String(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
@@ -198,7 +198,7 @@ func TestClauseNotGreater(t *testing.T) {
 		{name: "Not greater DateTime", input: []interface{}{"dob", tm1}, out: fmt.Sprintf("`dob` <= '%s'", utils.TimeToSQL(&tm1))},
 	}
 	for _, tst := range tests {
-		if got := clause.NotGreater(tst.input[0].(string), tst.input[1]).ToString(); got != tst.out {
+		if got := clause.NotGreater(tst.input[0].(string), tst.input[1]).String(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
@@ -218,7 +218,7 @@ func TestClauseNotLess(t *testing.T) {
 		{name: "Not less DateTime", input: []interface{}{"dob", tm1}, out: fmt.Sprintf("`dob` >= '%s'", utils.TimeToSQL(&tm1))},
 	}
 	for _, tst := range tests {
-		if got := clause.NotLess(tst.input[0].(string), tst.input[1]).ToString(); got != tst.out {
+		if got := clause.NotLess(tst.input[0].(string), tst.input[1]).String(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
@@ -239,12 +239,12 @@ func TestClauseNotIn(t *testing.T) {
 		{name: "Not in DateTime", input: []interface{}{"dob", tm1}, out: fmt.Sprintf("`dob` not in ('%s')", utils.TimeToSQL(&tm1))},
 	}
 	for _, tst := range tests {
-		if got := clause.NotIn(tst.input[0].(string), tst.input[1:]).ToString(); got != tst.out {
+		if got := clause.NotIn(tst.input[0].(string), tst.input[1:]).String(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
 	for _, tst := range tests {
-		if got := clause.NotIn(tst.input[0].(string), tst.input[1:]).ToString(); got != tst.out {
+		if got := clause.NotIn(tst.input[0].(string), tst.input[1:]).String(); got != tst.out {
 			t.Errorf("%v : Expected %v, got %v", tst.name, tst.out, got)
 		}
 	}
@@ -252,42 +252,42 @@ func TestClauseNotIn(t *testing.T) {
 
 func TestClauseNotLike(t *testing.T) {
 	cs := "`name` not like '%ma%'"
-	if ts := clause.NotLike("name", "%ma%").ToString(); ts != cs {
+	if ts := clause.NotLike("name", "%ma%").String(); ts != cs {
 		t.Errorf("Expecting %v, got %v", cs, ts)
 	}
 }
 
 func TestClauseNotStartsWith(t *testing.T) {
 	cs := "`model` not like 'atar%'"
-	if ts := clause.NotStartsWith("model", "atar").ToString(); ts != cs {
+	if ts := clause.NotStartsWith("model", "atar").String(); ts != cs {
 		t.Errorf("Expecting %v, got %v", cs, ts)
 	}
 }
 
 func TestClauseNotEndsWith(t *testing.T) {
 	cs := "`product` not like 'ole%'"
-	if ts := clause.NotStartsWith("product", "ole").ToString(); ts != cs {
+	if ts := clause.NotStartsWith("product", "ole").String(); ts != cs {
 		t.Errorf("Expecting %v, got %v", cs, ts)
 	}
 }
 
 func TestClauseNotContains(t *testing.T) {
 	cs := "`breed` not like '%ige%'"
-	if ts := clause.NotContains("breed", "ige").ToString(); ts != cs {
+	if ts := clause.NotContains("breed", "ige").String(); ts != cs {
 		t.Errorf("Expecting %v, got %v", cs, ts)
 	}
 }
 
 func TestClauseAndConjunction(t *testing.T) {
 	e := "`Age` = 12 AND `Name` = 'Alex'"
-	if r := clause.Equal("Age", 12).AndEqual("Name", "Alex").ToString(); r != e {
+	if r := clause.Equal("Age", 12).AndEqual("Name", "Alex").String(); r != e {
 		t.Errorf("Expected %v, got %v", e, r)
 	}
 }
 
 func TestClauseOrConjunction(t *testing.T) {
 	e := "`Age` = 12 OR `Name` <> 'Alex'"
-	if r := clause.Equal("Age", 12).OrNotEqual("Name", "Alex").ToString(); r != e {
+	if r := clause.Equal("Age", 12).OrNotEqual("Name", "Alex").String(); r != e {
 		t.Errorf("Expected %v, got %v", e, r)
 	}
 }

@@ -17,19 +17,19 @@ func TestClauseIn2(t *testing.T) {
 	s := []string{"Mark", "Sally", "Oliver"}
 	sd := 42
 	ss := "RED"
-	result := clause.In("ID", d).ToString()
+	result := clause.In("ID", d).String()
 	if result != expected[0] {
 		t.Errorf("expecting '%s' got '%s'", expected[0], result)
 	}
-	result = clause.In("Name", s).ToString()
+	result = clause.In("Name", s).String()
 	if result != expected[1] {
 		t.Errorf("expecting '%s' got '%s'", expected[1], result)
 	}
-	result = clause.In("Age", sd).ToString()
+	result = clause.In("Age", sd).String()
 	if result != expected[2] {
 		t.Errorf("expecting '%s' got '%s'", expected[2], result)
 	}
-	result = clause.In("Colour", ss).ToString()
+	result = clause.In("Colour", ss).String()
 	if result != expected[3] {
 		t.Errorf("expecting '%s' got '%s'", expected[3], result)
 	}
@@ -43,11 +43,11 @@ func TestClauseNotIn2(t *testing.T) {
 	}
 	d := []int{1, 2, 3, 4}
 	s := []string{"Mark", "Sally", "Oliver"}
-	result := clause.NotIn("ID", d).ToString()
+	result := clause.NotIn("ID", d).String()
 	if result != expected[0] {
 		t.Errorf("expecting '%s' got '%s'", expected[0], result)
 	}
-	result = clause.NotIn("Name", s).ToString()
+	result = clause.NotIn("Name", s).String()
 	if result != expected[1] {
 		t.Errorf("expecting '%s' got '%s'", expected[1], result)
 	}
@@ -60,11 +60,11 @@ func TestClauseAndIn2(t *testing.T) {
 	}
 	d := []int{2, 4, 6}
 	s := []string{"Mark", "Sally", "Oliver"}
-	result := clause.Equal("ID", 2).AndIn("Size", d).ToString()
+	result := clause.Equal("ID", 2).AndIn("Size", d).String()
 	if result != expected[0] {
 		t.Errorf("expecting '%s' got '%s'", expected[0], result)
 	}
-	result = clause.Equal("ID", 3).AndIn("Name", s).ToString()
+	result = clause.Equal("ID", 3).AndIn("Name", s).String()
 	if result != expected[1] {
 		t.Errorf("expecting '%s' got '%s'", expected[1], result)
 	}
